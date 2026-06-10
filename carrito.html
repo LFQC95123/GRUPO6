@@ -12,7 +12,6 @@
             min-height: 100vh;
             background: linear-gradient(180deg, #f0faf0 0%, #fff 100%);
         }
-
         .carrito-header {
             text-align: center;
             margin-bottom: 50px;
@@ -298,6 +297,7 @@
 <header>
     <nav>
         <h1>🌿 Mundo Andino Travel</h1>
+        <button class="hamburguesa" id="hamburguesa" onclick="toggleMenu()">☰</button>
         <ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="actividades.html">Actividades</a></li>
@@ -347,6 +347,22 @@
 </footer>
 
 <div class="toast" id="toast-msg"></div>
+
+<script>
+function toggleMenu() {
+    const menu = document.querySelector('nav ul');
+    const btn = document.getElementById('hamburguesa');
+    menu.classList.toggle('abierto');
+    btn.textContent = menu.classList.contains('abierto') ? '✕' : '☰';
+}
+// Cerrar menu al hacer click en un link
+document.querySelectorAll('nav ul a').forEach(a => {
+    a.addEventListener('click', () => {
+        document.querySelector('nav ul').classList.remove('abierto');
+        document.getElementById('hamburguesa').textContent = '☰';
+    });
+});
+</script>
 
 <script>
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];

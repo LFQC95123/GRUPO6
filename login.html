@@ -14,6 +14,7 @@
 <header>
     <nav>
         <h1>🌿 Mundo Andino Travel</h1>
+        <button class="hamburguesa" id="hamburguesa" onclick="toggleMenu()">☰</button>
         <ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="actividades.html">Actividades</a></li>
@@ -81,6 +82,22 @@
     <p>© 2026 Mundo Andino Travel</p>
 
 </footer>
+
+<script>
+function toggleMenu() {
+    const menu = document.querySelector('nav ul');
+    const btn = document.getElementById('hamburguesa');
+    menu.classList.toggle('abierto');
+    btn.textContent = menu.classList.contains('abierto') ? '✕' : '☰';
+}
+// Cerrar menu al hacer click en un link
+document.querySelectorAll('nav ul a').forEach(a => {
+    a.addEventListener('click', () => {
+        document.querySelector('nav ul').classList.remove('abierto');
+        document.getElementById('hamburguesa').textContent = '☰';
+    });
+});
+</script>
 
 </body>
 </html>

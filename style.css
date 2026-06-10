@@ -709,3 +709,38 @@ th,td{
     width:90%;
     margin:15px;
 }
+.hamburguesa {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .hamburguesa {
+        display: block;
+    }
+    nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: #1b5e20;
+        padding: 20px 0;
+        gap: 0;
+    }
+    nav ul.abierto {
+        display: flex;
+    }
+    nav ul li a {
+        display: block;
+        padding: 12px 40px;
+    }
+    nav ul li a:hover {
+        background: rgba(255,255,255,0.1);
+    }
+}
