@@ -4,409 +4,590 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actividades | Mundo Andino Travel</title>
-
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== DESTINOS SECTION ===== */
+        .destinos-section {
+            padding: 120px 8% 60px;
+            background: linear-gradient(180deg, #f0faf0 0%, #ffffff 100%);
+        }
+        .destinos-section .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .destinos-section .section-header h2 {
+            font-size: 42px;
+            color: #1b5e20;
+            margin-bottom: 12px;
+        }
+        .destinos-section .section-header p {
+            color: #555;
+            font-size: 17px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Destination Cards Grid */
+        .destinos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 28px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .destino-card-nueva {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.35s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+            position: relative;
+        }
+        .destino-card-nueva:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(46,125,50,0.2);
+        }
+        .destino-card-nueva.seleccionado {
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 4px rgba(46,125,50,0.15), 0 16px 40px rgba(46,125,50,0.25);
+        }
+        .badge-seleccionado {
+            display: none;
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #2e7d32;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            z-index: 2;
+        }
+        .destino-card-nueva.seleccionado .badge-seleccionado {
+            display: block;
+        }
+        .destino-card-nueva img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .destino-card-nueva:hover img {
+            transform: scale(1.05);
+        }
+        .destino-card-info {
+            padding: 18px 20px 22px;
+        }
+        .destino-card-info h3 {
+            font-size: 19px;
+            color: #1b5e20;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        .destino-card-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        .destino-precio-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .destino-precio {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+        .destino-precio span {
+            font-size: 13px;
+            font-weight: 400;
+            color: #888;
+        }
+        .btn-seleccionar {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #a5d6a7;
+            padding: 7px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-seleccionar:hover {
+            background: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+        .destino-card-nueva.seleccionado .btn-seleccionar {
+            background: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+
+        /* ===== PAQUETES SECTION ===== */
+        .paquetes-section {
+            padding: 60px 8%;
+            background: white;
+        }
+        .paquetes-section .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .paquetes-section .section-header h2 {
+            font-size: 38px;
+            color: #1b5e20;
+            margin-bottom: 10px;
+        }
+        .paquetes-section .section-header p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .paquetes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .paquete-card {
+            background: #f9fffe;
+            border: 2px solid #c8e6c9;
+            border-radius: 18px;
+            padding: 24px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .paquete-card:hover {
+            border-color: #66bb6a;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(46,125,50,0.13);
+        }
+        .paquete-card.seleccionado {
+            background: #1b5e20;
+            border-color: #1b5e20;
+            color: white;
+            box-shadow: 0 10px 30px rgba(27,94,32,0.35);
+            transform: translateY(-6px);
+        }
+        .paquete-card .paquete-icono {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+        .paquete-card .paquete-personas {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #2e7d32;
+        }
+        .paquete-card.seleccionado .paquete-personas {
+            color: #a5d6a7;
+        }
+        .paquete-card .paquete-precio {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1b5e20;
+        }
+        .paquete-card.seleccionado .paquete-precio {
+            color: white;
+        }
+        .paquete-card .paquete-precio small {
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .paquete-check {
+            display: none;
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            font-size: 18px;
+        }
+        .paquete-card.seleccionado .paquete-check {
+            display: block;
+        }
+
+        /* ===== AGREGAR AL CARRITO BTN ===== */
+        .agregar-section {
+            text-align: center;
+            padding: 10px 8% 60px;
+        }
+        .resumen-seleccion {
+            display: inline-flex;
+            gap: 30px;
+            background: #f1f8e9;
+            border: 1.5px solid #a5d6a7;
+            border-radius: 16px;
+            padding: 18px 36px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .resumen-item {
+            text-align: center;
+        }
+        .resumen-item .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #888;
+            font-weight: 600;
+        }
+        .resumen-item .valor {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1b5e20;
+        }
+        #resumen-total .valor {
+            font-size: 26px;
+            color: #2e7d32;
+        }
+        .btn-agregar-carrito {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(46,125,50,0.35);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-agregar-carrito:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(46,125,50,0.45);
+        }
+        .btn-agregar-carrito:disabled {
+            background: #ccc;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Cart indicator in nav */
+        .carrito-badge {
+            background: #ff5722;
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            padding: 2px 6px;
+            margin-left: 4px;
+            font-weight: 700;
+        }
+
+        /* Cronograma */
+        .pagina {
+            padding: 60px 8% 80px;
+            background: #f9fffe;
+        }
+        .pagina h2 {
+            font-size: 36px;
+            color: #1b5e20;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .descripcion-general {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+            color: #555;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .destinos-section, .paquetes-section { padding-top: 100px; }
+            .destinos-section .section-header h2 { font-size: 30px; }
+            .paquetes-grid { grid-template-columns: repeat(2, 1fr); }
+            .resumen-seleccion { padding: 14px 20px; }
+        }
+    </style>
 </head>
 <body>
 
 <header>
-
     <nav>
-
         <h1>🌿 Mundo Andino Travel</h1>
-
         <ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a class="activo" href="actividades.html">Actividades</a></li>
             <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="carrito.html">🛒 Carrito <span class="carrito-badge" id="nav-badge">0</span></a></li>
             <li><a href="login.html">Login</a></li>
         </ul>
-
     </nav>
-
 </header>
 
-<section class="pagina">
-    
-<div class="destinos">
-
-    <h2>🇵🇪 Destinos Turísticos Regenerativos en Perú</h2>
-
-    <p class="descripcion-destinos">
-        Mundo Andino Travel busca implementar actividades ecológicas
-        y turismo regenerativo en diferentes destinos turísticos del Perú,
-        promoviendo el cuidado ambiental y el apoyo a las comunidades locales.
-    </p>
-
-    <div class="contenedor-destinos">
-
-        <!-- DESTINO 1 -->
-
-        <div class="destino">
-
-            <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=1200&auto=format&fit=crop">
-
-            <h3>🏔 Machu Picchu - Cusco</h3>
-
-            <p>
-                Actividades de conservación ambiental,
-                limpieza de rutas turísticas y educación ecológica.
-            </p>
-
-        </div>
-
-        <!-- DESTINO 2 -->
-
-        <div class="destino">
-
-            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/28/9f/2b/lago-titicaca.jpg?w=1200&h=-1&s=1">
-
-            <h3>🌊 Lago Titicaca - Puno</h3>
-
-            <p>
-                Protección de ecosistemas acuáticos
-                y apoyo a comunidades locales sostenibles.
-            </p>
-
-        </div>
-
-        <!-- DESTINO 3 -->
-
-        <div class="destino">
-
-            <img src="https://marcamadrededios.pe/wp-content/uploads/Imagen-de-WhatsApp-2024-05-19-a-las-10.55.17_bcf07572-scaled.jpg">
-
-            <h3>🌳 Reserva Amazónica - Madre de Dios</h3>
-
-            <p>
-                Reforestación y conservación
-                de biodiversidad amazónica.
-            </p>
-
-        </div>
-
-        <!-- DESTINO 4 -->
-
-        <div class="destino">
-
-            <img src="https://www.nativatrips.com/wp-content/uploads/2025/07/valle-colca.jpg">
-
-            <h3>⛰ Valle del Colca - Arequipa</h3>
-
-            <p>
-                Limpieza de espacios naturales
-                y protección de fauna andina.
-            </p>
-
-        </div>
-
-        <!-- DESTINO 5 -->
-
-        <div class="destino">
-
-            <img src="https://i0.wp.com/www.actualidadambiental.pe/wp-content/uploads/2021/06/laguna-paron-andina.jpg?fit=900%2C600&ssl=1">
-
-            <h3>🏞 Parque Nacional Huascarán - Áncash</h3>
-
-            <p>
-                Conservación de ecosistemas de montaña
-                y educación ambiental.
-            </p>
-
-        </div>
-
-        <!-- DESTINO 6 -->
-
-        <div class="destino">
-
-            <img src="https://blog.redbus.pe/wp-content/uploads/2020/07/Paracas_466243646-scaled.jpg">
-
-            <h3>🏖 Reserva de Paracas - Ica</h3>
-
-            <p>
-                Protección costera y campañas
-                de limpieza de playas.
-            </p>
-
-        </div>
-
+<!-- ===== DESTINOS ===== -->
+<section class="destinos-section">
+    <div class="section-header">
+        <h2>🇵🇪 Elige tu Destino</h2>
+        <p>Selecciona el lugar que quieres explorar y contribuir a su conservación</p>
     </div>
+    <div class="destinos-grid" id="contenedor-destinos"></div>
+</section>
 
+<!-- ===== PAQUETES ===== -->
+<section class="paquetes-section">
+    <div class="section-header">
+        <h2>👥 Elige tu Paquete</h2>
+        <p>Escoge según cuántas personas viajarán contigo</p>
+    </div>
+    <div class="paquetes-grid" id="contenedor-paquetes"></div>
+</section>
+
+<!-- ===== AGREGAR ===== -->
+<div class="agregar-section">
+    <div class="resumen-seleccion">
+        <div class="resumen-item">
+            <div class="label">Destino</div>
+            <div class="valor" id="resumen-destino">—</div>
+        </div>
+        <div class="resumen-item">
+            <div class="label">Paquete</div>
+            <div class="valor" id="resumen-paquete">—</div>
+        </div>
+        <div class="resumen-item" id="resumen-total">
+            <div class="label">Total</div>
+            <div class="valor" id="resumen-precio">S/ 0</div>
+        </div>
+    </div>
+    <br>
+    <button class="btn-agregar-carrito" id="btn-agregar" disabled onclick="agregarAlCarrito()">
+        🛒 Agregar al Carrito
+    </button>
 </div>
-    <h2>Cronograma de Actividades</h2>
 
+<!-- ===== CRONOGRAMA ===== -->
+<section class="pagina">
+    <h2>Cronograma de Actividades</h2>
     <p class="descripcion-general">
         Cada actividad ecológica se realiza en un día diferente.
-        Los turistas podrán participar en jornadas enfocadas
-        en limpieza ambiental, reforestación y conservación del ecosistema.
+        Los turistas participan en jornadas de limpieza ambiental, reforestación y conservación del ecosistema.
     </p>
+
     <!-- DIA 1 -->
-
     <div class="cronograma">
-
         <div class="imagenes-cronograma">
-
-            <img class="img-actividad"
-            src="https://www.laregion.bo/wp-content/uploads/2021/04/chuquisaca-2.jpg">
-
-            <img class="img-hospedaje"
-            src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop">
-
+            <img class="img-actividad" src="https://www.laregion.bo/wp-content/uploads/2021/04/chuquisaca-2.jpg">
+            <img class="img-hospedaje" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop">
         </div>
-
         <div class="contenido-cronograma">
-
-            <h3>♻️ Día 1 - Limpieza Turística</h3>
-
-            <p>
-                Jornada dedicada a la limpieza de espacios naturales
-                y destinos turísticos para reducir la contaminación ambiental.
-            </p>
-
+            <h3>♻️ Día 1 — Limpieza Turística</h3>
+            <p>Jornada dedicada a la limpieza de espacios naturales y destinos turísticos para reducir la contaminación ambiental.</p>
             <div class="hospedaje">
-
                 <h4>🏡 Hospedaje Ecológico</h4>
-
-                <p>
-                    Los visitantes descansarán en cabañas ecológicas
-                    construidas con materiales sostenibles y rodeadas
-                    de naturaleza andina.
-                </p>
-
+                <p>Los visitantes descansarán en cabañas ecológicas construidas con materiales sostenibles y rodeadas de naturaleza andina.</p>
             </div>
-
             <div class="tabla-responsive">
-
-            <table>
-
-                <tr>
-                    <th>Hora</th>
-                    <th>Actividad</th>
-                    <th>Descripción</th>
-                </tr>
-
-                <tr>
-                    <td>7:00 AM</td>
-                    <td>Desayuno ecológico</td>
-                    <td>Inicio del día con alimentos saludables y charla introductoria.</td>
-                </tr>
-
-                <tr>
-                    <td>8:00 AM</td>
-                    <td>Caminata guiada</td>
-                    <td>Recorrido hacia la zona turística asignada.</td>
-                </tr>
-
-                <tr>
-                    <td>9:00 AM</td>
-                    <td>Limpieza ambiental</td>
-                    <td>Recolección y clasificación de residuos sólidos.</td>
-                </tr>
-
-                <tr>
-                    <td>12:00 PM</td>
-                    <td>Descanso</td>
-                    <td>Tiempo libre y refrigerio.</td>
-                </tr>
-
-                <tr>
-                    <td>2:00 PM</td>
-                    <td>Charlas ambientales</td>
-                    <td>Capacitación sobre reciclaje y cuidado del ambiente.</td>
-                </tr>
-
-            </table>
+                <table>
+                    <tr><th>Hora</th><th>Actividad</th><th>Descripción</th></tr>
+                    <tr><td>7:00 AM</td><td>Desayuno ecológico</td><td>Inicio del día con alimentos saludables y charla introductoria.</td></tr>
+                    <tr><td>8:00 AM</td><td>Caminata guiada</td><td>Recorrido hacia la zona turística asignada.</td></tr>
+                    <tr><td>9:00 AM</td><td>Limpieza ambiental</td><td>Recolección y clasificación de residuos sólidos.</td></tr>
+                    <tr><td>12:00 PM</td><td>Descanso</td><td>Tiempo libre y refrigerio.</td></tr>
+                    <tr><td>2:00 PM</td><td>Charlas ambientales</td><td>Capacitación sobre reciclaje y cuidado del ambiente.</td></tr>
+                </table>
             </div>
-
             <span>🎁 Descuento obtenido: 5%</span>
-
-            <div class="precio">
-                Precio del paquete: <strong>S/ 250</strong>
-            </div>
-
+            <div class="precio">Precio del paquete: <strong>S/ 250</strong></div>
         </div>
-
     </div>
 
     <!-- DIA 2 -->
-
     <div class="cronograma">
-
         <div class="imagenes-cronograma">
-
-            <img class="img-actividad"
-            src="https://moreliactiva.com/wp-content/uploads/2023/10/IMG-20231024-WA0005-780x470.jpg">
-
-            <img class="img-hospedaje"
-            src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop">
-
+            <img class="img-actividad" src="https://moreliactiva.com/wp-content/uploads/2023/10/IMG-20231024-WA0005-780x470.jpg">
+            <img class="img-hospedaje" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1200&auto=format&fit=crop">
         </div>
-
         <div class="contenido-cronograma">
-
-            <h3>🌱 Día 2 - Reforestación</h3>
-
-            <p>
-                Actividad enfocada en la recuperación de áreas verdes
-                mediante la plantación de árboles nativos.
-            </p>
-
+            <h3>🌱 Día 2 — Reforestación</h3>
+            <p>Actividad enfocada en la recuperación de áreas verdes mediante la plantación de árboles nativos.</p>
             <div class="hospedaje">
-
                 <h4>🏨 Hospedaje Natural</h4>
-
-                <p>
-                    El alojamiento incluye habitaciones ecológicas
-                    con vista a bosques y áreas verdes protegidas.
-                </p>
-
+                <p>El alojamiento incluye habitaciones ecológicas con vista a bosques y áreas verdes protegidas.</p>
             </div>
             <div class="tabla-responsive">
-
-            <table>
-
-                <tr>
-                    <th>Hora</th>
-                    <th>Actividad</th>
-                    <th>Descripción</th>
-                </tr>
-
-                <tr>
-                    <td>7:30 AM</td>
-                    <td>Desayuno energético</td>
-                    <td>Preparación para la jornada de reforestación.</td>
-                </tr>
-
-                <tr>
-                    <td>8:30 AM</td>
-                    <td>Traslado</td>
-                    <td>Viaje hacia las zonas de recuperación forestal.</td>
-                </tr>
-
-                <tr>
-                    <td>10:00 AM</td>
-                    <td>Plantación de árboles</td>
-                    <td>Siembra de especies nativas y cuidado inicial.</td>
-                </tr>
-
-                <tr>
-                    <td>1:00 PM</td>
-                    <td>Almuerzo campestre</td>
-                    <td>Descanso y alimentación en zona natural.</td>
-                </tr>
-
-                <tr>
-                    <td>3:00 PM</td>
-                    <td>Taller ecológico</td>
-                    <td>Aprendizaje sobre conservación forestal.</td>
-                </tr>
-
-            </table>
+                <table>
+                    <tr><th>Hora</th><th>Actividad</th><th>Descripción</th></tr>
+                    <tr><td>7:30 AM</td><td>Desayuno energético</td><td>Preparación para la jornada de reforestación.</td></tr>
+                    <tr><td>8:30 AM</td><td>Traslado</td><td>Viaje hacia las zonas de recuperación forestal.</td></tr>
+                    <tr><td>10:00 AM</td><td>Plantación de árboles</td><td>Siembra de especies nativas y cuidado inicial.</td></tr>
+                    <tr><td>1:00 PM</td><td>Almuerzo campestre</td><td>Descanso y alimentación en zona natural.</td></tr>
+                    <tr><td>3:00 PM</td><td>Taller ecológico</td><td>Aprendizaje sobre conservación forestal.</td></tr>
+                </table>
             </div>
-
             <span>🎁 Descuento obtenido: 10%</span>
-
-            <div class="precio">
-                Precio del paquete: <strong>S/ 420</strong>
-            </div>
-
+            <div class="precio">Precio del paquete: <strong>S/ 420</strong></div>
         </div>
-
     </div>
 
     <!-- DIA 3 -->
-
     <div class="cronograma">
-
         <div class="imagenes-cronograma">
-
-            <img class="img-actividad"
-            src="https://elcomercio-elcomercio-prod.web.arc-cdn.net/resizer/v2/GSERQ2MY3BBNVBFB5ECBPPPSKM.jpg?auth=a3cfd4ca79c345d1b8a60fcd24f2d70b933c09dea20bd5464ad5282f2943220d&width=980&height=515&smart=true&quality=75">
-
-            <img class="img-hospedaje"
-            src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop">
-
+            <img class="img-actividad" src="https://elcomercio-elcomercio-prod.web.arc-cdn.net/resizer/v2/GSERQ2MY3BBNVBFB5ECBPPPSKM.jpg?auth=a3cfd4ca79c345d1b8a60fcd24f2d70b933c09dea20bd5464ad5282f2943220d&width=980&height=515&smart=true&quality=75">
+            <img class="img-hospedaje" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop">
         </div>
-
         <div class="contenido-cronograma">
-
-            <h3>🌳 Día 3 - Cuidado del Ecosistema</h3>
-
-            <p>
-                Actividades educativas y de conservación enfocadas
-                en flora, fauna y biodiversidad.
-            </p>
-
+            <h3>🌳 Día 3 — Cuidado del Ecosistema</h3>
+            <p>Actividades educativas y de conservación enfocadas en flora, fauna y biodiversidad.</p>
             <div class="hospedaje">
-
-                <h4>🌄 Dormitorio Ecológico</h4>
-
-                <p>
-                    Los turistas descansarán en eco-lodges sostenibles
-                    equipados con energía renovable y zonas de descanso natural.
-                </p>
-
+                <h4>🌄 Eco-Lodge Sostenible</h4>
+                <p>Los turistas descansarán en eco-lodges equipados con energía renovable y zonas de descanso natural.</p>
             </div>
             <div class="tabla-responsive">
-
-            <table>
-
-                <tr>
-                    <th>Hora</th>
-                    <th>Actividad</th>
-                    <th>Descripción</th>
-                </tr>
-
-                <tr>
-                    <td>7:00 AM</td>
-                    <td>Caminata ecológica</td>
-                    <td>Observación de flora y fauna local.</td>
-                </tr>
-
-                <tr>
-                    <td>9:00 AM</td>
-                    <td>Protección ambiental</td>
-                    <td>Actividades de conservación del ecosistema.</td>
-                </tr>
-
-                <tr>
-                    <td>11:00 AM</td>
-                    <td>Educación ambiental</td>
-                    <td>Charlas sobre biodiversidad y sostenibilidad.</td>
-                </tr>
-
-                <tr>
-                    <td>1:00 PM</td>
-                    <td>Almuerzo regional</td>
-                    <td>Degustación de platos típicos locales.</td>
-                </tr>
-
-                <tr>
-                    <td>3:00 PM</td>
-                    <td>Fotografía natural</td>
-                    <td>Sesión de fotografías y cierre de actividades.</td>
-                </tr>
-
-            </table>
+                <table>
+                    <tr><th>Hora</th><th>Actividad</th><th>Descripción</th></tr>
+                    <tr><td>7:00 AM</td><td>Caminata ecológica</td><td>Observación de flora y fauna local.</td></tr>
+                    <tr><td>9:00 AM</td><td>Protección ambiental</td><td>Actividades de conservación del ecosistema.</td></tr>
+                    <tr><td>11:00 AM</td><td>Educación ambiental</td><td>Charlas sobre biodiversidad y sostenibilidad.</td></tr>
+                    <tr><td>1:00 PM</td><td>Almuerzo regional</td><td>Degustación de platos típicos locales.</td></tr>
+                    <tr><td>3:00 PM</td><td>Fotografía natural</td><td>Sesión de fotografías y cierre de actividades.</td></tr>
+                </table>
             </div>
             <span>🎁 Descuento obtenido: 5%</span>
-
-            <div class="precio">
-                Precio del paquete: <strong>S/ 350</strong>
-            </div>
-
+            <div class="precio">Precio del paquete: <strong>S/ 350</strong></div>
         </div>
-
     </div>
-
 </section>
 
 <footer>
-
     <p>© 2026 Mundo Andino Travel</p>
-
 </footer>
+
+<script>
+const destinos = [
+    { nombre: "Machu Picchu",       precio: 1200, imagen: "https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=800&auto=format&fit=crop", desc: "Ciudadela inca rodeada de nubes y vegetación exuberante." },
+    { nombre: "Lago Titicaca",      precio: 900,  imagen: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/28/9f/2b/lago-titicaca.jpg?w=800", desc: "El lago navegable más alto del mundo, con islas flotantes únicas." },
+    { nombre: "Valle del Colca",    precio: 700,  imagen: "https://www.nativatrips.com/wp-content/uploads/2025/07/valle-colca.jpg", desc: "Hogar del cóndor andino y paisajes de terrazas milenarias." },
+    { nombre: "Reserva de Paracas", precio: 650,  imagen: "https://blog.redbus.pe/wp-content/uploads/2020/07/Paracas_466243646-scaled.jpg", desc: "Reserva marina con playas de arena roja y fauna silvestre." },
+    { nombre: "Huascarán",          precio: 850,  imagen: "https://i0.wp.com/www.actualidadambiental.pe/wp-content/uploads/2021/06/laguna-paron-andina.jpg", desc: "La cumbre nevada más alta del Perú y sus lagunas glaciares." }
+];
+
+const paquetes = [
+    { personas: "2 personas",  precio: 400,  icono: "👫" },
+    { personas: "4 personas",  precio: 800,  icono: "👨‍👩‍👧‍👦" },
+    { personas: "10 personas", precio: 1800, icono: "🧑‍🤝‍🧑" },
+    { personas: "20 personas", precio: 3500, icono: "👥" },
+    { personas: "30+ personas",precio: 5000, icono: "🏟️" }
+];
+
+let destinoSeleccionado = null;
+let paqueteSeleccionado = null;
+
+// Render destinos
+const gridDestinos = document.getElementById('contenedor-destinos');
+destinos.forEach((d, i) => {
+    gridDestinos.innerHTML += `
+    <div class="destino-card-nueva" id="dcard-${i}" onclick="seleccionarDestino(${i})">
+        <span class="badge-seleccionado">✓ Seleccionado</span>
+        <img src="${d.imagen}" alt="${d.nombre}" loading="lazy">
+        <div class="destino-card-info">
+            <h3>${d.nombre}</h3>
+            <p>${d.desc}</p>
+            <div class="destino-precio-row">
+                <div class="destino-precio">S/ ${d.precio.toLocaleString()} <span>/ persona</span></div>
+                <button class="btn-seleccionar" id="dbtn-${i}">Seleccionar</button>
+            </div>
+        </div>
+    </div>`;
+});
+
+// Render paquetes
+const gridPaquetes = document.getElementById('contenedor-paquetes');
+paquetes.forEach((p, i) => {
+    gridPaquetes.innerHTML += `
+    <div class="paquete-card" id="pcard-${i}" onclick="seleccionarPaquete(${i})">
+        <span class="paquete-check">✅</span>
+        <div class="paquete-icono">${p.icono}</div>
+        <div class="paquete-personas">${p.personas}</div>
+        <div class="paquete-precio">S/ ${p.precio.toLocaleString()} <small>total</small></div>
+    </div>`;
+});
+
+function seleccionarDestino(i) {
+    document.querySelectorAll('.destino-card-nueva').forEach(c => c.classList.remove('seleccionado'));
+    document.querySelectorAll('.btn-seleccionar').forEach(b => b.textContent = 'Seleccionar');
+    document.getElementById('dcard-' + i).classList.add('seleccionado');
+    document.getElementById('dbtn-' + i).textContent = '✓ Seleccionado';
+    destinoSeleccionado = destinos[i];
+    actualizarResumen();
+}
+
+function seleccionarPaquete(i) {
+    document.querySelectorAll('.paquete-card').forEach(c => c.classList.remove('seleccionado'));
+    document.getElementById('pcard-' + i).classList.add('seleccionado');
+    paqueteSeleccionado = paquetes[i];
+    actualizarResumen();
+}
+
+function actualizarResumen() {
+    const btnAgregar = document.getElementById('btn-agregar');
+    if (destinoSeleccionado) {
+        document.getElementById('resumen-destino').textContent = destinoSeleccionado.nombre;
+    }
+    if (paqueteSeleccionado) {
+        document.getElementById('resumen-paquete').textContent = paqueteSeleccionado.personas;
+    }
+    if (destinoSeleccionado && paqueteSeleccionado) {
+        const total = destinoSeleccionado.precio + paqueteSeleccionado.precio;
+        document.getElementById('resumen-precio').textContent = 'S/ ' + total.toLocaleString();
+        btnAgregar.disabled = false;
+    } else {
+        document.getElementById('resumen-precio').textContent = 'S/ 0';
+        btnAgregar.disabled = true;
+    }
+}
+
+function agregarAlCarrito() {
+    if (!destinoSeleccionado || !paqueteSeleccionado) return;
+    const total = destinoSeleccionado.precio + paqueteSeleccionado.precio;
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    carrito.push({
+        destino: destinoSeleccionado.nombre,
+        imagen: destinoSeleccionado.imagen,
+        precioDestino: destinoSeleccionado.precio,
+        paquete: paqueteSeleccionado.personas,
+        precioPaquete: paqueteSeleccionado.precio,
+        total: total
+    });
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    actualizarBadge();
+
+    // Animación de confirmación
+    const btn = document.getElementById('btn-agregar');
+    btn.textContent = '✅ ¡Agregado!';
+    btn.style.background = 'linear-gradient(135deg, #388e3c, #1b5e20)';
+    setTimeout(() => {
+        btn.innerHTML = '🛒 Agregar al Carrito';
+        btn.style.background = '';
+    }, 2000);
+}
+
+function actualizarBadge() {
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const badge = document.getElementById('nav-badge');
+    if (badge) badge.textContent = carrito.length;
+}
+
+actualizarBadge();
+</script>
 
 </body>
 </html>
-

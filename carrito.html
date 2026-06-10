@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito | Mundo Andino Travel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .carrito-page {
+            padding: 120px 8% 80px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #f0faf0 0%, #fff 100%);
+        }
+
+        .carrito-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .carrito-header h2 {
+            font-size: 42px;
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+        .carrito-header p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        /* Empty state */
+        .carrito-vacio {
+            text-align: center;
+            padding: 80px 20px;
+            display: none;
+        }
+        .carrito-vacio .emoji-vacio {
+            font-size: 72px;
+            margin-bottom: 20px;
+        }
+        .carrito-vacio h3 {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+        .carrito-vacio p {
+            color: #888;
+            margin-bottom: 28px;
+        }
+        .btn-ir-actividades {
+            display: inline-block;
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(46,125,50,0.3);
+        }
+        .btn-ir-actividades:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(46,125,50,0.4);
+        }
+
+        /* Cards del carrito */
+        .carrito-items {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto 40px;
+        }
+
+        .carrito-item-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 140px 1fr auto;
+            align-items: center;
+            transition: all 0.3s;
+            border: 1.5px solid #e8f5e9;
+        }
+        .carrito-item-card:hover {
+            box-shadow: 0 8px 30px rgba(46,125,50,0.15);
+            border-color: #a5d6a7;
+        }
+        .carrito-item-img {
+            width: 140px;
+            height: 120px;
+            object-fit: cover;
+        }
+        .carrito-item-info {
+            padding: 20px 24px;
+        }
+        .carrito-item-info h3 {
+            font-size: 20px;
+            color: #1b5e20;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .carrito-item-detalles {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .detalle-chip {
+            background: #f1f8e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-size: 13px;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        .detalle-chip span {
+            font-weight: 700;
+        }
+        .carrito-item-precio {
+            padding: 20px 24px;
+            text-align: right;
+            min-width: 150px;
+        }
+        .precio-label {
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+        .precio-total-item {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1b5e20;
+            line-height: 1;
+            margin-bottom: 14px;
+        }
+        .btn-eliminar-card {
+            background: #fff5f5;
+            color: #c62828;
+            border: 1.5px solid #ffcdd2;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+        .btn-eliminar-card:hover {
+            background: #c62828;
+            color: white;
+            border-color: #c62828;
+        }
+
+        /* Resumen total */
+        .carrito-resumen {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            border-radius: 22px;
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 10px 40px rgba(27,94,32,0.3);
+        }
+        .resumen-izq .resumen-titulo {
+            font-size: 14px;
+            color: #a5d6a7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .resumen-izq .resumen-items-count {
+            font-size: 16px;
+            color: #c8e6c9;
+        }
+        .resumen-center {
+            text-align: center;
+        }
+        .resumen-center .total-label {
+            font-size: 14px;
+            color: #a5d6a7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .resumen-center .total-monto {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+        .resumen-center .total-monto small {
+            font-size: 24px;
+        }
+        .resumen-acciones {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .btn-reservar {
+            background: white;
+            color: #1b5e20;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .btn-reservar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .btn-vaciar-nuevo {
+            background: transparent;
+            color: #ffcdd2;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-vaciar-nuevo:hover {
+            background: rgba(198,40,40,0.3);
+            border-color: #ef9a9a;
+            color: white;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1b5e20;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+        }
+        .toast.mostrar {
+            transform: translateX(0);
+        }
+
+        /* Cart counter badge in nav */
+        .carrito-badge {
+            background: #ff5722;
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            padding: 2px 6px;
+            margin-left: 4px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .carrito-item-card {
+                grid-template-columns: 1fr;
+            }
+            .carrito-item-img {
+                width: 100%;
+                height: 180px;
+            }
+            .carrito-item-precio {
+                text-align: left;
+                padding-top: 0;
+            }
+            .carrito-resumen {
+                flex-direction: column;
+                text-align: center;
+                padding: 28px 24px;
+            }
+            .resumen-center .total-monto {
+                font-size: 38px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <h1>🌿 Mundo Andino Travel</h1>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="actividades.html">Actividades</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a class="activo" href="carrito.html">🛒 Carrito <span class="carrito-badge" id="nav-badge">0</span></a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="carrito-page">
+    <div class="carrito-header">
+        <h2>🛒 Carrito de Reservas</h2>
+        <p>Revisa y confirma tus selecciones antes de reservar</p>
+    </div>
+
+    <!-- Estado vacío -->
+    <div class="carrito-vacio" id="estado-vacio">
+        <div class="emoji-vacio">🌿</div>
+        <h3>Tu carrito está vacío</h3>
+        <p>Aún no has agregado ningún destino. ¡Explora nuestras actividades!</p>
+        <a href="actividades.html" class="btn-ir-actividades">Ver Actividades</a>
+    </div>
+
+    <!-- Items del carrito -->
+    <div class="carrito-items" id="lista-carrito"></div>
+
+    <!-- Resumen total -->
+    <div class="carrito-resumen" id="resumen-total-bloque" style="display:none;">
+        <div class="resumen-izq">
+            <div class="resumen-titulo">Resumen</div>
+            <div class="resumen-items-count" id="resumen-count">0 destinos seleccionados</div>
+        </div>
+        <div class="resumen-center">
+            <div class="total-label">Total a Pagar</div>
+            <div class="total-monto"><small>S/</small> <span id="total-numero">0</span></div>
+        </div>
+        <div class="resumen-acciones">
+            <button class="btn-reservar" onclick="confirmarReserva()">✅ Confirmar Reserva</button>
+            <button class="btn-vaciar-nuevo" onclick="vaciarCarrito()">🗑 Vaciar carrito</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Mundo Andino Travel</p>
+</footer>
+
+<div class="toast" id="toast-msg"></div>
+
+<script>
+let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+function mostrarToast(msg) {
+    const t = document.getElementById('toast-msg');
+    t.textContent = msg;
+    t.classList.add('mostrar');
+    setTimeout(() => t.classList.remove('mostrar'), 2800);
+}
+
+function actualizarBadge() {
+    const badge = document.getElementById('nav-badge');
+    if (badge) badge.textContent = carrito.length;
+}
+
+function renderCarrito() {
+    const lista = document.getElementById('lista-carrito');
+    const vacio = document.getElementById('estado-vacio');
+    const resumenBloque = document.getElementById('resumen-total-bloque');
+
+    lista.innerHTML = '';
+
+    if (carrito.length === 0) {
+        vacio.style.display = 'block';
+        resumenBloque.style.display = 'none';
+        actualizarBadge();
+        return;
+    }
+
+    vacio.style.display = 'none';
+    resumenBloque.style.display = 'flex';
+
+    let suma = 0;
+    carrito.forEach((item, idx) => {
+        suma += item.total;
+        // Fallback image si no tiene
+        const img = item.imagen || 'https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=400&auto=format&fit=crop';
+        lista.innerHTML += `
+        <div class="carrito-item-card" id="item-${idx}">
+            <img class="carrito-item-img" src="${img}" alt="${item.destino}" loading="lazy">
+            <div class="carrito-item-info">
+                <h3>📍 ${item.destino}</h3>
+                <div class="carrito-item-detalles">
+                    <div class="detalle-chip">🗺 Destino: <span>S/ ${item.precioDestino.toLocaleString()}</span></div>
+                    <div class="detalle-chip">👥 ${item.paquete || item.precioPaquete + ' personas'}: <span>S/ ${item.precioPaquete.toLocaleString()}</span></div>
+                </div>
+            </div>
+            <div class="carrito-item-precio">
+                <div class="precio-label">Subtotal</div>
+                <div class="precio-total-item">S/ ${item.total.toLocaleString()}</div>
+                <button class="btn-eliminar-card" onclick="eliminarItem(${idx})">🗑 Eliminar</button>
+            </div>
+        </div>`;
+    });
+
+    document.getElementById('total-numero').textContent = suma.toLocaleString();
+    document.getElementById('resumen-count').textContent = carrito.length + (carrito.length === 1 ? ' destino seleccionado' : ' destinos seleccionados');
+    actualizarBadge();
+}
+
+function eliminarItem(idx) {
+    const nombre = carrito[idx].destino;
+    carrito.splice(idx, 1);
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    renderCarrito();
+    mostrarToast('✅ ' + nombre + ' eliminado del carrito');
+}
+
+function vaciarCarrito() {
+    if (confirm('¿Estás seguro de que deseas vaciar el carrito?')) {
+        carrito = [];
+        localStorage.removeItem('carrito');
+        renderCarrito();
+        mostrarToast('🗑 Carrito vaciado');
+    }
+}
+
+function confirmarReserva() {
+    if (carrito.length === 0) return;
+    mostrarToast('🎉 ¡Reserva confirmada! Nos contactaremos contigo pronto.');
+    setTimeout(() => {
+        if (confirm('¡Reserva confirmada! ¿Deseas vaciar el carrito?')) {
+            carrito = [];
+            localStorage.removeItem('carrito');
+            renderCarrito();
+        }
+    }, 1000);
+}
+
+renderCarrito();
+</script>
+
+</body>
+</html>
