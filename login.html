@@ -19,6 +19,7 @@
             <li><a href="index.html">Inicio</a></li>
             <li><a href="actividades.html">Actividades</a></li>
             <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="carrito.html">🛒 Carrito <span class="carrito-badge" id="nav-badge">0</span></a></li>
             <li><a class="activo" href="login.html">Login</a></li>
         </ul>
     </nav>
@@ -97,7 +98,41 @@ document.querySelectorAll('nav ul a').forEach(a => {
         document.getElementById('hamburguesa').textContent = '☰';
     });
 });
+
+function agregarAlCarrito() {
+    if (!destinoSeleccionado || !paqueteSeleccionado) return;
+    const total = destinoSeleccionado.precio + paqueteSeleccionado.precio;
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    carrito.push({
+        destino: destinoSeleccionado.nombre,
+        imagen: destinoSeleccionado.imagen,
+        precioDestino: destinoSeleccionado.precio,
+        paquete: paqueteSeleccionado.personas,
+        precioPaquete: paqueteSeleccionado.precio,
+        total: total
+    });
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    actualizarBadge();
+
+    // Animación de confirmación
+    const btn = document.getElementById('btn-agregar');
+    btn.textContent = '✅ ¡Agregado!';
+    btn.style.background = 'linear-gradient(135deg, #388e3c, #1b5e20)';
+    setTimeout(() => {
+        btn.innerHTML = '🛒 Agregar al Carrito';
+        btn.style.background = '';
+    }, 2000);
+}
+
+function actualizarBadge() {
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const badge = document.getElementById('nav-badge');
+    if (badge) badge.textContent = carrito.length;
+}
+
+actualizarBadge();
 </script>
+<script src="contador.js"></script>
 
 </body>
 </html>
